@@ -76,17 +76,23 @@ if (ls && ls.cards && ls.cards.length) {
 function reducer(state, action) {
   switch (action.type) {
     case "addCard":
-      return {
-        ...state,
-        cards: [
-          ...state.cards,
-          {
-            content: action.content,
-            id: state.cards.length,
-            column: action.column
-          }
-        ]
-      };
+      if (action.content) {
+        return {
+          ...state,
+          cards: [
+            ...state.cards,
+            {
+              content: action.content,
+              id: state.cards.length,
+              column: action.column
+            }
+          ]
+        };
+      } else {
+        return {
+          ...state
+        };
+      }
     case "moveCardButton":
       const cardToMove = state.cards.find(card => action.cardId === card.id);
       const i = state.cards.indexOf(card => action.cardId === card.id);
@@ -96,6 +102,14 @@ function reducer(state, action) {
       return {
         ...state,
         cards: newCardsArray
+      };
+    case "deleteButton":
+      const filteredArray = state.cards.filter(
+        card => action.cardId !== card.id
+      );
+      return {
+        ...state,
+        cards: filteredArray
       };
     default:
       throw new Error();
@@ -123,42 +137,61 @@ function App() {
             {state.cards
               .filter(card => card.column === column.id)
               .map(card => (
-                <div key={card.id} className="card">
-                  {column.id !== 0 && (
-                    <button
-                      type="button"
-                      className="leftButton addButton"
-                      onClick={() => {
-                        dispatch({
-                          type: "moveCardButton",
-                          column: column.id,
-                          cardId: card.id,
-                          move: -1
-                        });
-                      }}
-                    >
-                      {`<-`}
-                    </button>
-                  )}
+                <div className="cardWrapper" key={card.id}>
+                  <div className="card">
+                    {column.id !== 0 ? (
+                      <button
+                        type="button"
+                        className="leftButton"
+                        onClick={() => {
+                          dispatch({
+                            type: "moveCardButton",
+                            column: column.id,
+                            cardId: card.id,
+                            move: -1
+                          });
+                        }}
+                      >
+                        {`<`}
+                      </button>
+                    ) : (
+                      <div className="leftButton" />
+                    )}
 
-                  {card.content}
+                    <div className="cardContent">{card.content}</div>
 
-                  {column.id !== state.columns.length - 1 && (
-                    <button
-                      type="button"
-                      className="rightButton addButton"
-                      onClick={() => {
-                        dispatch({
-                          type: "moveCardButton",
-                          column: column.id,
-                          cardId: card.id,
-                          move: 1
-                        });
-                      }}
-                    >
-                      {`->`}
-                    </button>
-                  )}
+                    {column.id !== state.columns.length - 1 ? (
+                      <button
+                        type="button"
+                        className="rightButton"
+                        onClick={() => {
+                          dispatch({
+                            type: "moveCardButton",
+                            column: column.id,
+                            cardId: card.id,
+                            move: 1
+                          });
+                        }}
+                      >
+                        {`>`}
+                      </button>
+                    ) : (
+                      <div className="leftButton" />
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="deleteButton"
+                    onClick={() => {
+                      dispatch({
+                        type: "deleteButton",
+                        cardId: card.id
+                      });
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
               ))}
             <button
