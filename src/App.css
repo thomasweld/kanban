@@ -1,0 +1,57 @@
+.App {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.column {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.column-0 {
+  margin: 20px 12.5px 20px 25px;
+}
+
+.column-1,
+.column-2 {
+  margin: 20px 12.5px 20px 12.5px;
+}
+
+/* .column-2 {
+  margin: 20px 12.5px 20px 12.5px;
+} */
+
+.column-3 {
+  margin: 20px 25px 20px 12.5px;
+}
+
+.title {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+}
+
+.title-0 {
+  background-color: #8e6e95;
+}
+.title-1 {
+  background-color: #39a59c;
+}
+.title-2 {
+  background-color: #344759;
+}
+.title-3 {
+  background-color: #e8741e;
+}
+
+.card {
+  width: 80%;
+}
+
+.addButton {
+  display: block;
+}
